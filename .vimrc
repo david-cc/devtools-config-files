@@ -1,1 +1,0 @@
-/home/vidda/.vimrc
