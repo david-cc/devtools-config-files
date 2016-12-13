@@ -1,3 +1,3 @@
 # Config files
 
-Repository to store my tools config files like .vimrc
+Repository to store my devtools config files like .vimrc
