@@ -1,28 +1,18 @@
 execute pathogen#infect()
 
-" filetype plugin on
+filetype plugin indent on
 
 " enable syntax highlighting
 syntax enable
 
-" indent when moving to the next line while writing code
-set autoindent
-
 " show line numbers
 set number
 
-" show existing tab with 2 spaces width
+" Tab 2
 set tabstop=2
-
-" when indenting with '>', use 2 spaces width
 set shiftwidth=2
-
-" On pressing tab, insert 2 spaces
-set expandtab
-
-" smarttab and smartindent
-set smarttab
-set smartindent
+" indent when moving to the next line while writing code
+set autoindent
 
 " show a visual line under the cursor's current line
 set cursorline
@@ -30,18 +20,15 @@ set cursorline
 " show the matching part of the pair for [] {} and ()
 set showmatch
 
-" add matching bracket and CR
-inoremap { {<CR><BS>}<Esc>ko
+" show max line col width
+set colorcolumn=80
 
-" Show max line col width
-" set colorcolumn=80
-
-" search as characters are entered
-" set incsearch
-
-" smart search: if uppercase used, search will look for uppercase else it will search for insensitive case
+" search
 set ignorecase
 set smartcase
+
+" toggle paste mode
+set pastetoggle=<F2>
 
 " highlight matches
 set hlsearch
@@ -53,17 +40,21 @@ nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 set laststatus=2
 
 " theme
-" let base16colorspace=256
 colorscheme monokai
+set background=dark
 
 " couleur de la recherche: fg=blanc bg=rose
 hi Search cterm=NONE ctermfg=255 ctermbg=197
 
 " Show hidden characters
-" set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:·
-" set listchars=eol:¬
-set listchars=eol:$,tab:>·,trail:~,extends:>,precedes:<,space:·
-" set list
+set listchars=eol:¬,tab:\|\ ,trail:~,extends:>,precedes:<,space:·
+set list
+
+" SpecialKey color (whitespace)
+highlight SpecialKey ctermfg=236
+
+" NonText color
+highlight NonText ctermfg=236
 
 " Buffer management
 nnoremap <F5> :buffers<CR>:buffer<Space>
@@ -74,16 +65,21 @@ nmap <silent> <F7> :bn<CR>
 " Select matching text in brackets, parenthesis
 noremap % v%
 
+" If you prefer the Omni-Completion tip window to close when a selection is
+" made, these lines close it on movement in insert mode or when leaving
+" insert mode
+autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+" Bundle EasyMotion
 let g:EasyMotion_leader_key = '<Leader>'
-
-" Bundle Indent line
-let g:indentLine_enabled = 0
-" let g:indentLine_char = '┆'
-" let g:indentLine_char = '¦'
-" let g:indentLine_char = '|'
-
-" let g:indentLine_color_term = 239
-" let g:indentLine_color_term = 236
 
 " Bundle Move
 let g:move_key_modifier = 'C'
@@ -94,8 +90,6 @@ let g:user_emmet_leader_key='<C-x>'
 " Bundle NERDTree
 set splitright
 nmap <silent> <F3> :NERDTreeToggle<CR>
-"autocmd StdinReadPre * let s:std_in=1
-"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " Bundle Syntastic
@@ -111,6 +105,12 @@ let g:ctrlp_custom_ignore = {
   \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
 \}
 
+" Bundle Airline
+let g:airline_exclude_preview = 1
+
+" Map jj to Esc in INSERT mode
+imap jj <Esc>
+
 " Remap line wrapping cursor moving
 nnoremap j gj
 nnoremap k gk
@@ -121,6 +121,7 @@ nnoremap <Up> gk
 vnoremap <Down> gj
 vnoremap <Up> gk
 
-" Remap scroll up (AltGr-i) and scroll down (AltGr-u)
-nmap → <C-u>
-nmap ↓ <C-d>
+" Remap scroll up and down
+nmap K <C-u>
+nmap J <C-d>
+
